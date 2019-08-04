@@ -18,16 +18,17 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private boolean playerOne;
-    private boolean playerTwo;
+
     private Integer[] values = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     private String winner;
+    private boolean isAllPressed;
     private final String TAG = "MainActivity";
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.playerOne = true;
-        this.playerTwo = false;
+        this.isAllPressed = false;
         this.winner = "None";
 
         super.onCreate(savedInstanceState);
@@ -103,9 +104,22 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0; i < 4; i++) {
             if (values[a] == 1 && values[b] == 1 && values[c] == 1 && values[d] == 1) {
-                winner = "Player1";
+                winner = "Player 1 wins!";
             } else if (values[a] == 2 && values[b] == 2 && values[c] == 2 && values[d] == 2) {
-                winner = "Player2";
+                winner = "Player 2 wins!";
+            }
+        }
+
+    }
+
+    public void checkIfAllPressed() {
+        this.isAllPressed = true;
+        GridLayout grid = findViewById(R.id.buttonGrid);
+        int cells = grid.getChildCount();
+        for(int i = 0; i < cells; i++) {
+            View child = grid.getChildAt(i);
+            if(!(child.isSelected())) {
+                isAllPressed = false;
             }
         }
 
@@ -114,15 +128,20 @@ public class MainActivity extends AppCompatActivity {
     public void checkIfWon() {
         markButtonValues();
         iteratePossibleWinnings();
+        checkIfAllPressed();
 
-        if (this.winner.contains("Player1")) {
+        if (this.winner.contains("Player 1 wins!")) {
             //Player 1 wins
-            System.out.println("Player 1 wins");
+
             announceWinner();
 
-        } else if (this.winner.contains("Player2")) {
+        } else if (this.winner.contains("Player 2 wins!")) {
             //Player 2 wins
-            System.out.println("Player 2 wins");
+
+            announceWinner();
+        } else if (isAllPressed == true && this.winner.contains("None")) {
+            //In case of draw
+            this.winner = "Draw!";
             announceWinner();
         }
     }
@@ -136,6 +155,8 @@ public class MainActivity extends AppCompatActivity {
         if (!(v.isSelected())) {
             v.setSelected(true);
             Button button = v.findViewById(R.id.cellButton);
+
+            //Set Clicked button to have either X / O
             if (this.playerOne) {
                 button.setText(R.string.X);
 
@@ -150,16 +171,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeTurns() {
-        //Set Clicked button to have either X / O
+
         if (playerOne) {
             this.playerOne = false;
-            this.playerTwo = true;
+
             TextView playerScreen = findViewById(R.id.playerTurnView);
             playerScreen.setText(R.string.playerTwo);
 
         } else {
             this.playerOne = true;
-            this.playerTwo = false;
+
             TextView playerScreen = findViewById(R.id.playerTurnView);
             playerScreen.setText(R.string.playerOne);
         }
@@ -169,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void announceWinner() {
         Intent intent = new Intent(this, DisplayWinnerActivity.class);
-        String message = winner + " wins!";
+        String message = winner;
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
     }
