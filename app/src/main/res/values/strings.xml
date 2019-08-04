@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TicTacToeAndroid</string>
+    <string name="playerOne">Turn: Player 1</string>
+    <string name="playerTwo">Turn: Player 2</string>
+    <string name="X">X</string>
+    <string name="O">O</string>
+</resources>
