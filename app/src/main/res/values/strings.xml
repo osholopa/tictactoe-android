@@ -4,4 +4,6 @@
     <string name="playerTwo">Turn: Player 2</string>
     <string name="X">X</string>
     <string name="O">O</string>
+    <string name="playAgain">Play Again! :)</string>
+    <string name="winnerText">Winner:</string>
 </resources>

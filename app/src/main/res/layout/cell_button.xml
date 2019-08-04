@@ -3,8 +3,7 @@
     android:id="@+id/cellButton"
     android:layout_width="100dp"
     android:layout_height="100dp"
-    android:state_selected="false"
     android:onClick="buttonPress"
-    android:text="Button"
-    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-    android:textSize="18sp" />
+    android:state_selected="false"
+    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+    android:textSize="36sp" />
