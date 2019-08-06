@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Button xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cellButton"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
     android:onClick="buttonPress"
     android:state_selected="false"
     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-    android:textSize="36sp" />
+    android:textSize="18sp" />

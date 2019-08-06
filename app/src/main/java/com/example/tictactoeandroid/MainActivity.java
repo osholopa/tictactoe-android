@@ -3,6 +3,7 @@ package com.example.tictactoeandroid;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +20,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private boolean playerOne;
 
-    private Integer[] values = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    private ArrayList<Integer> values;
     private String winner;
     private boolean isAllPressed;
     private final String TAG = "MainActivity";
@@ -30,19 +31,28 @@ public class MainActivity extends AppCompatActivity {
         this.playerOne = true;
         this.isAllPressed = false;
         this.winner = "None";
+        this.values = new ArrayList<>();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         createGrid();
         initializePlayerScreen();
+        initializeValues();
+    }
+
+    public void initializeValues() {
+        for(int i = 0; i < 100; i++) {
+            values.add(0);
+        }
     }
 
     private void createGrid() {
         GridLayout gridLayout = findViewById(R.id.buttonGrid);
         gridLayout.removeAllViews();
-        int total = 16;
-        int column = 4;
+        int total = 100;
+        int column = 10;
         int row = total / column;
         gridLayout.setColumnCount(column);
         gridLayout.setRowCount(row + 1);
@@ -71,11 +81,11 @@ public class MainActivity extends AppCompatActivity {
             View child = (Button) gridLayout.getChildAt(i);
             String buttontext = ((Button) child).getText().toString();
             if (buttontext.contains("X")) {
-                 values[i] = 1;
+                 values.set(i, 1);
             } else if (buttontext.contains("O")) {
-                values[i] = 2;
+                values.set(i, 2);
             } else {
-                values[i] = 0;
+                values.set(i, 0);
             }
 
             i++;
@@ -86,26 +96,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void iteratePossibleWinnings() {
-        checkRow(0,1,2,3);
-        checkRow(4,5,6,7);
-        checkRow(8,9,10,11);
-        checkRow(12,13,14,15);
+        //horizontal line check
+        for (int index = 0; index <= 90; index += 10) {
 
-        checkRow(0,4,8,12);
-        checkRow(1,5,9,13);
-        checkRow(2,6,10,14);
-        checkRow(3,7,11,15);
+            for (int i = index; i < (index + 6); i++) {
+                checkRow(i,i+1,i+2,i+3,i+4);
+            }
+        }
 
-        checkRow(3,6,9,12);
-        checkRow(0,5,10,15);
+        //vertical line check
+        for (int i = 0; i < 10; i++) {
+
+            for (int index = i; index < 60; index += 10) {
+                checkRow(index,index+10,index+20,index+30,index+40);
+            }
+        }
+        //diagonal line check
+        for (int i = 0; i < 6; i ++) {
+            for (int index = i; index < 60; index += 10) {
+                checkRow(index,index+11,index+22,index+33,index+44);
+
+            }
+        }
+        for (int i = 90; i < 96; i ++) {
+            for (int index = i; index > 40; index -= 10) {
+                checkRow(index,index-9,index-18,index-27,index-36);
+            }
+        }
+
     }
 
-    public void checkRow(int a, int b, int c, int d) {
+    public void checkRow(int a, int b, int c, int d, int e) {
 
         for(int i = 0; i < 4; i++) {
-            if (values[a] == 1 && values[b] == 1 && values[c] == 1 && values[d] == 1) {
+            if (values.get(a) == 1 && values.get(b) == 1 && values.get(c) == 1 && values.get(d) == 1 && values.get(e) == 1) {
                 winner = "Player 1 wins!";
-            } else if (values[a] == 2 && values[b] == 2 && values[c] == 2 && values[d] == 2) {
+            } else if (values.get(a) == 2 && values.get(b) == 2 && values.get(c) == 2 && values.get(d) == 2 && values.get(e) == 2) {
                 winner = "Player 2 wins!";
             }
         }
